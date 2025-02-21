@@ -109,9 +109,9 @@ function drawWheel() {
     
     // Draw pointer
     ctx.beginPath();
-    ctx.moveTo(CENTER.x, CENTER.y - RADIUS - 20);
-    ctx.lineTo(CENTER.x - 10, CENTER.y - RADIUS + 10);
-    ctx.lineTo(CENTER.x + 10, CENTER.y - RADIUS + 10);
+    ctx.moveTo(CENTER.x, CENTER.y - RADIUS + 10);
+    ctx.lineTo(CENTER.x - 10, CENTER.y - RADIUS - 20);
+    ctx.lineTo(CENTER.x + 10, CENTER.y - RADIUS - 20);
     ctx.closePath();
     ctx.fillStyle = GOLD;
     ctx.fill();
