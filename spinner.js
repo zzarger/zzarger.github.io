@@ -9,7 +9,8 @@ const MIN_SPEED = 0.001;
 
 // Colors
 const GOLD = '#FFD700';
-const BLACK = '#000000';
+const BLACK = '#1A1A1A';
+const WHITE = '#FFFFFF';
 const MAROON = '#800000';
 
 // Historical figures with exact filenames
@@ -53,10 +54,10 @@ let animationId;
 function drawWheel() {
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
     
-    // Draw main circle
+    // Draw main circle with dark background
     ctx.beginPath();
     ctx.arc(CENTER.x, CENTER.y, RADIUS, 0, Math.PI * 2);
-    ctx.fillStyle = GOLD;
+    ctx.fillStyle = BLACK;
     ctx.fill();
     
     const segmentAngle = (Math.PI * 2) / FIGURES.length;
@@ -69,30 +70,14 @@ function drawWheel() {
         const startAngle = i * segmentAngle + angle + startOffset;
         const endAngle = (i + 1) * segmentAngle + angle + startOffset;
         
-        // Alternate segment colors
-        if (i % 2 === 0) {
-            ctx.beginPath();
-            ctx.arc(CENTER.x, CENTER.y, RADIUS, startAngle, endAngle);
-            ctx.strokeStyle = MAROON;
-            ctx.lineWidth = 2;
-            ctx.stroke();
-        }
-        
-        // Draw segment lines
-        ctx.beginPath();
-        ctx.moveTo(CENTER.x, CENTER.y);
-        ctx.lineTo(
-            CENTER.x + RADIUS * Math.cos(startAngle),
-            CENTER.y + RADIUS * Math.sin(startAngle)
-        );
-        ctx.strokeStyle = BLACK;
-        ctx.stroke();
-        
         // Draw image with offset
         const imgAngle = startAngle + segmentAngle / 2;
         const imgRadius = RADIUS * 0.7;
         const imgX = CENTER.x + imgRadius * Math.cos(imgAngle);
         const imgY = CENTER.y + imgRadius * Math.sin(imgAngle);
+
+        // Draw segment lines in white above images
+        ctx.beginPath();
         
         ctx.save();
         ctx.translate(imgX, imgY);
@@ -102,7 +87,25 @@ function drawWheel() {
         ctx.drawImage(images[i], -40, -24, 80, 48); // Doubled size but maintained aspect ratio
         
         ctx.restore();
+
+        // Draw segment lines in white above images
+        ctx.beginPath();
+        ctx.moveTo(CENTER.x, CENTER.y);
+        ctx.lineTo(
+            CENTER.x + RADIUS * Math.cos(startAngle),
+            CENTER.y + RADIUS * Math.sin(startAngle)
+        );
+        ctx.strokeStyle = WHITE;
+        ctx.lineWidth = 2;
+        ctx.stroke();
     }
+    
+    // Draw outer circle in white
+    ctx.beginPath();
+    ctx.arc(CENTER.x, CENTER.y, RADIUS, 0, Math.PI * 2);
+    ctx.strokeStyle = WHITE;
+    ctx.lineWidth = 2;
+    ctx.stroke();
     
     // Draw pointer
     ctx.beginPath();
@@ -110,7 +113,7 @@ function drawWheel() {
     ctx.lineTo(CENTER.x - 10, CENTER.y - RADIUS + 10);
     ctx.lineTo(CENTER.x + 10, CENTER.y - RADIUS + 10);
     ctx.closePath();
-    ctx.fillStyle = BLACK;
+    ctx.fillStyle = GOLD;
     ctx.fill();
     
     // Draw selected text
