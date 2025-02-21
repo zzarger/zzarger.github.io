@@ -87,8 +87,13 @@ function drawWheel() {
         ctx.translate(imgX, imgY);
         ctx.rotate(imgAngle + Math.PI / 2);
         
-        // Draw image (adjusted size for 400x240 aspect ratio)
-        ctx.drawImage(images[i], -40, -24, 80, 48); // Doubled size but maintained aspect ratio
+        // Draw middle half of image while maintaining aspect ratio
+        // Source aspect ratio is 200:240 (width:height) = 0.833
+        // For a destination width of 60px, height should be 72px to maintain ratio
+        ctx.drawImage(images[i], 
+            100, 0, 200, 240,    // source coordinates (x,y,width,height)
+            -30, -36, 60, 72     // destination coordinates (x,y,width,height)
+        ); 
         
         ctx.restore();
 
