@@ -12,16 +12,37 @@ const GOLD = '#FFD700';
 const BLACK = '#000000';
 const MAROON = '#800000';
 
-// Historical figures
+// Historical figures with exact filenames
 const FIGURES = [
-    "AMINA", "ASHOKA", "AUGUSTUS",
-    "BENJAMIN FRANKLIN", "CATHERINE THE GREAT", "CHARLEMAGNE",
-    "CONFUCIUS", "FRIEDRICH", "HARRIET TUBMAN",
-    "HATSHEPSUT", "HIMIKO", "IBN BATTUTA",
-    "ISABELLA", "JOSE RIZAL", "LAFAYETTE",
-    "MACHIAVELLI", "NAPOLEON", "PACHACUTI",
-    "TECUMSEH", "TRUNG TRAC", "XERXES"
+    {name: "AMINA", img: "images/Leaders_Amina_400x240.avif"},
+    {name: "ASHOKA", img: "images/Civilizations_Ashoka_400x240.avif"},
+    {name: "AUGUSTUS", img: "images/Civilizations_Augustus_400x240.avif"},
+    {name: "BENJAMIN FRANKLIN", img: "images/Leaders_Benji_400x240.avif"},
+    {name: "CATHERINE THE GREAT", img: "images/Leaders_Catherine_400x240.avif"},
+    {name: "CHARLEMAGNE", img: "images/Leaders_Charlemagne_400x240.avif"},
+    {name: "CONFUCIUS", img: "images/Civilizations_Confusius_400x240.avif"},
+    {name: "FRIEDRICH", img: "images/Leaders_400x240Friedrich.avif"},
+    {name: "HARRIET TUBMAN", img: "images/Leaders_Harriet_400x240.avif"},
+    {name: "HATSHEPSUT", img: "images/Civilizations_Hatshepsut_400x240.avif"},
+    {name: "HIMIKO", img: "images/Leaders_400x240Himiko.avif"},
+    {name: "IBN BATTUTA", img: "images/Leaders_Ibn_Battuta_400x240.avif"},
+    {name: "ISABELLA", img: "images/Civilizations_Isabella_400x240.avif"},
+    {name: "JOSE RIZAL", img: "images/Leaders_Jose-Rizal_400x240.avif"},
+    {name: "LAFAYETTE", img: "images/Leaders_Lafayette_400x240.avif"},
+    {name: "MACHIAVELLI", img: "images/Civilizations_Machiavelli_400x240.avif"},
+    {name: "NAPOLEON", img: "images/Leaders_Napoleon_400x240.avif"},
+    {name: "PACHACUTI", img: "images/Civilizations_Pachacuti_400x240.avif"},
+    {name: "TECUMSEH", img: "images/Civilizations_Tecumseh_400x240.avif"},
+    {name: "TRUNG TRAC", img: "images/Civilizations_TrungTrac_400x240.avif"},
+    {name: "XERXES", img: "images/Civilizations_Xerxes_400x240.avif"}
 ];
+
+// Preload images
+const images = FIGURES.map(figure => {
+    const img = new Image();
+    img.src = figure.img;
+    return img;
+});
 
 let angle = 0;
 let spinning = false;
@@ -64,19 +85,19 @@ function drawWheel() {
         ctx.strokeStyle = BLACK;
         ctx.stroke();
         
-        // Draw text
-        const textAngle = startAngle + segmentAngle / 2;
-        const textRadius = RADIUS * 0.7;
-        const textX = CENTER.x + textRadius * Math.cos(textAngle);
-        const textY = CENTER.y + textRadius * Math.sin(textAngle);
+        // Draw image
+        const imgAngle = startAngle + segmentAngle / 2;
+        const imgRadius = RADIUS * 0.7;
+        const imgX = CENTER.x + imgRadius * Math.cos(imgAngle);
+        const imgY = CENTER.y + imgRadius * Math.sin(imgAngle);
         
         ctx.save();
-        ctx.translate(textX, textY);
-        ctx.rotate(textAngle + Math.PI / 2);
-        ctx.fillStyle = BLACK;
-        ctx.font = '20px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText(FIGURES[i], 0, 0);
+        ctx.translate(imgX, imgY);
+        ctx.rotate(imgAngle + Math.PI / 2);
+        
+        // Draw image (adjusted size for 400x240 aspect ratio)
+        ctx.drawImage(images[i], -40, -24, 80, 48); // Doubled size but maintained aspect ratio
+        
         ctx.restore();
     }
     
@@ -102,7 +123,7 @@ function getSelectedFigure() {
     const segmentAngle = 360 / FIGURES.length;
     const normalizedAngle = ((angle * 180 / Math.PI) % 360 + 360) % 360;
     const index = Math.floor(((360 - normalizedAngle) % 360) / segmentAngle);
-    return FIGURES[index];
+    return FIGURES[index].name;
 }
 
 function animate() {
