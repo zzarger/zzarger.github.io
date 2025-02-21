@@ -51,6 +51,10 @@ let spinSpeed = 0;
 let selected = null;
 let animationId;
 
+const SPIN_SOUND = new Audio('sounds/spinning-wheel.mp3'); 
+SPIN_SOUND.loop = true;
+const BELL_SOUND = new Audio('sounds/bell-ding.mp3'); 
+
 function drawWheel() {
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
     
@@ -150,9 +154,17 @@ function animate() {
         angle += spinSpeed;
         spinSpeed *= SPIN_SLOWDOWN;
         
+        if (SPIN_SOUND.paused) {
+            SPIN_SOUND.play();
+        }
+        
         if (spinSpeed < MIN_SPEED) {
             spinning = false;
             selected = getSelectedFigure();
+            // Stop spinning sound and play bell
+            SPIN_SOUND.pause();
+            SPIN_SOUND.currentTime = 0;
+            BELL_SOUND.play();
         }
     }
     
