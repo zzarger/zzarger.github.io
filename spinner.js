@@ -61,10 +61,13 @@ function drawWheel() {
     
     const segmentAngle = (Math.PI * 2) / FIGURES.length;
     
+    // Add initial -90 degree rotation (π/2) to start at top
+    const startOffset = -Math.PI/2;
+    
     // Draw segments
     for (let i = 0; i < FIGURES.length; i++) {
-        const startAngle = i * segmentAngle + angle;
-        const endAngle = (i + 1) * segmentAngle + angle;
+        const startAngle = i * segmentAngle + angle + startOffset;
+        const endAngle = (i + 1) * segmentAngle + angle + startOffset;
         
         // Alternate segment colors
         if (i % 2 === 0) {
@@ -85,7 +88,7 @@ function drawWheel() {
         ctx.strokeStyle = BLACK;
         ctx.stroke();
         
-        // Draw image
+        // Draw image with offset
         const imgAngle = startAngle + segmentAngle / 2;
         const imgRadius = RADIUS * 0.7;
         const imgX = CENTER.x + imgRadius * Math.cos(imgAngle);
@@ -120,9 +123,22 @@ function drawWheel() {
 }
 
 function getSelectedFigure() {
-    const segmentAngle = 360 / FIGURES.length;
-    const normalizedAngle = ((angle * 180 / Math.PI) % 360 + 360) % 360;
-    const index = Math.floor(((360 - normalizedAngle) % 360) / segmentAngle);
+    // Normalize the angle to be between 0 and 2π
+    let normalizedAngle = angle % (Math.PI * 2);
+    if (normalizedAngle < 0) {
+        normalizedAngle += Math.PI * 2;
+    }
+    
+    // Calculate segment size
+    const segmentAngle = (Math.PI * 2) / FIGURES.length;
+    let adjustedAngle = (normalizedAngle + segmentAngle) % 360;
+    
+    // Calculate the index of the selected figure
+    const selectedIndex = FIGURES.length - Math.floor(adjustedAngle / segmentAngle);
+    
+    // Handle wrap-around
+    const index = selectedIndex % FIGURES.length;
+    
     return FIGURES[index].name;
 }
 
