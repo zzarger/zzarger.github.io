@@ -102,6 +102,18 @@ function drawWheel() {
         ctx.strokeStyle = WHITE;
         ctx.lineWidth = 2;
         ctx.stroke();
+
+        if ( i == FIGURES.length - 1) {
+            ctx.beginPath();
+            ctx.moveTo(CENTER.x, CENTER.y);
+            ctx.lineTo(
+                CENTER.x + RADIUS * Math.cos(angle + startOffset),
+                CENTER.y + RADIUS * Math.sin(angle + startOffset)
+            );
+            ctx.strokeStyle = WHITE;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
     }
     
     // Draw outer circle in white
